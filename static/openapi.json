@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ESCAP Care Dataset Plugin",
-    "description": "This API allows ChatGPT to search for relevant documents, summaries, and links in the ESCAP Care Dataset. The documents are processed dynamically to answer user queries.",
+    "description": "This API allows ChatGPT to query ESCAP's care-related documents stored in Airtable. Responses are sourced dynamically from Airtable records.",
     "version": "1.0.0"
   },
   "servers": [
