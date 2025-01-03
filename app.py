@@ -1,4 +1,12 @@
-from flask import Flask, request, jsonify
+@app.route("/.well-known/ai-plugin.json", methods=["GET"])
+def serve_ai_plugin():
+    return app.send_static_file(".well-known/ai-plugin.json")
+
+@app.route("/.well-known/openapi.json", methods=["GET"])
+def serve_openapi_spec():
+    return app.send_static_file("static/openapi.json")
+    
+    from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
@@ -45,12 +53,4 @@ def retrieve():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
-@app.route("/.well-known/ai-plugin.json", methods=["GET"])
-def serve_ai_plugin():
-    return app.send_static_file(".well-known/ai-plugin.json")
-
-@app.route("/.well-known/openapi.json", methods=["GET"])
-def serve_openapi_spec():
-    return app.send_static_file("static/openapi.json")
 
