@@ -1,1 +1,20 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "ESCAP Care Plugin",
+  "name_for_model": "escap_care_plugin",
+  "description_for_human": "Search care-related documents in Airtable.",
+  "description_for_model": "Use this plugin to search care-related documents stored in Airtable.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://escap-care-repository.onrender.com/openapi.json",
+    "is_user_authenticated": false
+  },
+  "logo_url": null,
+  "contact_email": "yile.chen@un.org",
+  "legal_info_url": "not applicable"
+}
+
 
