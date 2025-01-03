@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import requests
 
 app = Flask(__name__)
@@ -45,13 +45,13 @@ def retrieve():
 
 @app.route("/.well-known/ai-plugin.json", methods=["GET"])
 def serve_ai_plugin():
-    # Correctly serve ai-plugin.json from the .well-known folder
-    return app.send_static_file("ai-plugin.json")
+    # Serve ai-plugin.json from .well-known directory inside static
+    return send_from_directory(directory="static/.well-known", path="ai-plugin.json")
 
-@app.route("/.well-known/openapi.json", methods=["GET"])
+@app.route("/openapi.json", methods=["GET"])
 def serve_openapi_spec():
-    # Correctly serve openapi.json from the static folder
-    return app.send_static_file("openapi.json")
+    # Serve openapi.json from the static directory
+    return send_from_directory(directory="static", path="openapi.json")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
