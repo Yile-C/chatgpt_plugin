@@ -1,0 +1,83 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ESCAP Care Dataset Plugin",
+    "description": "This API allows ChatGPT to search for relevant documents, summaries, and links in the ESCAP Care Dataset. The documents are processed dynamically to answer user queries.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://your-render-url.onrender.com",
+      "description": "Deployed server"
+    }
+  ],
+  "paths": {
+    "/retrieve": {
+      "get": {
+        "summary": "Retrieve relevant documents",
+        "description": "Search for relevant documents and information based on user queries. This endpoint returns matching documents along with summaries and links to the original documents.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "The search term to query the documents. For example, 'care infrastructure' or 'definition of care economy'.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of matching documents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Title": {
+                        "type": "string",
+                        "description": "The title of the document."
+                      },
+                      "Summary": {
+                        "type": "string",
+                        "description": "A summary of the document's contents."
+                      },
+                      "Link": {
+                        "type": "string",
+                        "description": "A URL link to the original document."
+                      },
+                      "Full Document Text": {
+                        "type": "string",
+                        "description": "The full text of the document (optional, can be large)."
+                      }
+                    },
+                    "required": ["Title", "Summary", "Link"]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching documents found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No matching documents found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
