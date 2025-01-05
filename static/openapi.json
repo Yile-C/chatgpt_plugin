@@ -1,29 +1,30 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "ESCAP Care Dataset Plugin",
-    "description": "This API allows ChatGPT to query ESCAP's care-related documents stored in Airtable. Responses are sourced dynamically from Airtable records.",
+    "title": "ESCAP Care Dataset API",
+    "description": "This API allows the GPT to search ESCAP's care-related documents stored in Airtable. It retrieves detailed information, including document titles, summaries, tags, and full text.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://escap-care-repository.onrender.com",
-      "description": "Deployed server"
+      "url": "https://api.airtable.com/v0/appHteagZvsaN3iJT",
+      "description": "Airtable API Server"
     }
   ],
   "paths": {
-    "/retrieve": {
+    "/ESCAP%20Care%20Dataset": {
       "get": {
-        "summary": "Retrieve relevant documents",
-        "description": "Search for relevant documents and information based on user queries. This endpoint returns matching documents along with summaries and links to the original documents.",
+        "summary": "Retrieve care-related documents",
+        "description": "Fetch care-related documents from Airtable based on search queries, including title, summary, tags, and full text.",
         "parameters": [
           {
-            "name": "query",
-            "in": "query",
-            "description": "The search term to query the documents. For example, 'care infrastructure' or 'definition of care economy'.",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer token for accessing Airtable API",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer pat9LupkTRizgDI1S.bf542c6adc45ce1c98b4a94f4d8785c71eef0e02d5f2c218719a6d3cf163b7e3"
             }
           }
         ],
@@ -33,48 +34,67 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "Title": {
-                        "type": "string",
-                        "description": "The title of the document."
-                      },
-                      "Summary": {
-                        "type": "string",
-                        "description": "A summary of the document's contents."
-                      },
-                      "Link": {
-                        "type": "string",
-                        "description": "A URL link to the original document."
-                      },
-                      "Full Document Text": {
-                        "type": "string",
-                        "description": "The full text of the document (optional, can be large)."
-                      }
-                    },
-                    "required": ["Title", "Summary", "Link"]
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No matching documents found.",
-            "content": {
-              "application/json": {
-                "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "No matching documents found."
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Title": {
+                            "type": "string",
+                            "description": "The title of the document."
+                          },
+                          "Summary": {
+                            "type": "string",
+                            "description": "A brief summary of the document."
+                          },
+                          "Tags": {
+                            "type": "string",
+                            "description": "Tags associated with the document."
+                          },
+                          "Folder": {
+                            "type": "string",
+                            "description": "The folder in which the document is categorized."
+                          },
+                          "Link": {
+                            "type": "string",
+                            "description": "URL link to the document."
+                          },
+                          "Attachment": {
+                            "type": "string",
+                            "description": "Link to attached files or resources."
+                          },
+                          "Full Document Text": {
+                            "type": "string",
+                            "description": "The full text of the document (if available)."
+                          },
+                          "Full Document Text (Part 2)": {
+                            "type": "string",
+                            "description": "Additional text if the document is too long."
+                          },
+                          "Full Document Text (Part 3)": {
+                            "type": "string",
+                            "description": "Additional text if the document is too long."
+                          },
+                          "Full Document Text (Part 4)": {
+                            "type": "string",
+                            "description": "Additional text if the document is too long."
+                          }
+                        },
+                        "required": ["Title", "Summary", "Link"]
+                      }
                     }
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized. The API key provided is invalid."
+          },
+          "404": {
+            "description": "No matching documents found."
           }
         }
       }
