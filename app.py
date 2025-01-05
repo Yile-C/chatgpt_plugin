@@ -9,7 +9,6 @@ AIRTABLE_API_KEY = "Bearer pat9LupkTRizgDI1S.bf542c6adc45ce1c98b4a94f4d8785c71ee
 
 @app.route("/retrieve", methods=["GET"])
 def retrieve():
-    # Get the query parameter from the user
     query = request.args.get("query", "").lower()
     headers = {"Authorization": AIRTABLE_API_KEY}
 
@@ -24,7 +23,6 @@ def retrieve():
     results = []
     for record in data.get("records", []):
         fields = record.get("fields", {})
-        # Concatenate all parts of the Full Document Text
         full_text = (
             fields.get("Full Document Text", "") +
             fields.get("Full Document Text (Part 2)", "") +
@@ -32,7 +30,6 @@ def retrieve():
             fields.get("Full Document Text (Part 4)", "")
         ).lower()
 
-        # Check if the query exists in the concatenated text
         if query in full_text:
             results.append({
                 "Title": fields.get("Title", ""),
@@ -48,16 +45,6 @@ def retrieve():
         return jsonify({"message": "No matching documents found."}), 404
 
     return jsonify(results)
-
-@app.route("/.well-known/ai-plugin.json", methods=["GET"])
-def serve_ai_plugin():
-    # Serve ai-plugin.json from the .well-known folder
-    return app.send_static_file(".well-known/ai-plugin.json")
-
-@app.route("/openapi.json", methods=["GET"])
-def serve_openapi_spec():
-    # Serve openapi.json from the static folder
-    return app.send_static_file("openapi.json")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
